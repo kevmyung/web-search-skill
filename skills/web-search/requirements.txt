@@ -1,0 +1,3 @@
+ddgs
+httpx
+beautifulsoup4
