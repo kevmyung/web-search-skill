@@ -1,6 +1,6 @@
 ---
 name: wikipedia-search
-description: "Search and retrieve Wikipedia articles. Use when the user needs encyclopedic information, definitions, historical context, or background knowledge on a topic."
+description: "Look up factual knowledge, definitions, historical context, or background information on people, places, concepts, and events from Wikipedia."
 allowed-tools: Bash(python3 *)
 ---
 

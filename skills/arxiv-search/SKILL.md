@@ -1,6 +1,6 @@
 ---
 name: arxiv-search
-description: "Search and retrieve scientific papers from ArXiv. Use when the user needs academic research, scientific papers, or technical publications on a topic."
+description: "Find academic papers, preprints, and scientific research on ArXiv. Use when the user asks about state-of-the-art methods, recent research, or needs citations for technical claims."
 allowed-tools: Bash(python3 *)
 ---
 

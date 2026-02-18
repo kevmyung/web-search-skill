@@ -1,6 +1,6 @@
 ---
 name: web-search
-description: "Search the web using DuckDuckGo and optionally fetch full content from result URLs. No API key required. Dependencies are auto-installed on first run."
+description: "Search the web for up-to-date information, recent news, current events, or any topic that may require knowledge beyond the training cutoff. Also fetches full content from URLs when deeper reading is needed."
 allowed-tools: Bash(python3 *)
 ---
 

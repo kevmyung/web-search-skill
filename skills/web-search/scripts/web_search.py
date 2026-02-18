@@ -23,6 +23,7 @@ _REQUIRED = {"ddgs": "ddgs", "httpx": "httpx", "bs4": "beautifulsoup4"}
 
 # If not running inside the skill venv, bootstrap and re-exec
 if not sys.prefix.startswith(str(_VENV_DIR)):
+    _env = {**os.environ, "PIP_DISABLE_PIP_VERSION_CHECK": "1"}
     if not _VENV_DIR.exists():
         subprocess.check_call([sys.executable, "-m", "venv", str(_VENV_DIR)])
     _pip = str(_VENV_DIR / "bin" / "pip")
@@ -30,7 +31,7 @@ if not sys.prefix.startswith(str(_VENV_DIR)):
                 if subprocess.run([str(_VENV_DIR / "bin" / "python3"), "-c", f"import {mod}"],
                                   capture_output=True).returncode != 0]
     if _missing:
-        subprocess.check_call([_pip, "install", "-q"] + _missing)
+        subprocess.check_call([_pip, "install", "-q"] + _missing, env=_env)
     os.execv(str(_VENV_DIR / "bin" / "python3"), [str(_VENV_DIR / "bin" / "python3")] + sys.argv)
 
 # Configure logging
