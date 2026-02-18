@@ -12,12 +12,26 @@ import subprocess
 import sys
 from typing import Optional, Dict, List, Any
 
-# Auto-install missing dependencies
+# Auto-setup: create venv and install dependencies if needed
 import importlib.util
+import os
+from pathlib import Path
+
+_SKILL_DIR = Path(__file__).resolve().parent.parent
+_VENV_DIR = _SKILL_DIR / ".venv"
 _REQUIRED = {"ddgs": "ddgs", "httpx": "httpx", "bs4": "beautifulsoup4"}
-_missing = [pkg for mod, pkg in _REQUIRED.items() if not importlib.util.find_spec(mod)]
-if _missing:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q"] + _missing)
+
+# If not running inside the skill venv, bootstrap and re-exec
+if not sys.prefix.startswith(str(_VENV_DIR)):
+    if not _VENV_DIR.exists():
+        subprocess.check_call([sys.executable, "-m", "venv", str(_VENV_DIR)])
+    _pip = str(_VENV_DIR / "bin" / "pip")
+    _missing = [pkg for mod, pkg in _REQUIRED.items()
+                if subprocess.run([str(_VENV_DIR / "bin" / "python3"), "-c", f"import {mod}"],
+                                  capture_output=True).returncode != 0]
+    if _missing:
+        subprocess.check_call([_pip, "install", "-q"] + _missing)
+    os.execv(str(_VENV_DIR / "bin" / "python3"), [str(_VENV_DIR / "bin" / "python3")] + sys.argv)
 
 # Configure logging
 logging.basicConfig(

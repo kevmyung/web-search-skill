@@ -1,77 +1,83 @@
-# Web Search Skill
+# Web Search Skills
 
-A Claude Code skill for searching the web using DuckDuckGo and fetching content from URLs. No API key required. Dependencies are auto-installed on first run.
+A collection of Claude Code skills for searching the web, Wikipedia, and ArXiv. No API keys required. Dependencies are auto-installed on first run.
 
-## Features
+## Skills
 
-- **Web Search** — Search via DuckDuckGo (privacy-friendly, no API key)
-- **URL Content Fetching** — Extract clean text from any web page
-- **Search + Auto-Fetch** — Search and automatically fetch content from top results
+| Skill | Description | Source |
+|-------|-------------|--------|
+| **web-search** | DuckDuckGo web search + URL content fetching | DuckDuckGo |
+| **wikipedia-search** | Wikipedia article search and retrieval | Wikipedia API |
+| **arxiv-search** | Scientific paper search and retrieval | ArXiv API |
 
 ## Installation
 
-### Claude Code (recommended)
+### Claude Code
+
+Install individual skills or all at once:
 
 ```bash
-# Clone and copy to your skills directory
 git clone https://github.com/kevmyung/web-search-skill.git /tmp/web-search-skill
+
+# Install all skills
+cp -r /tmp/web-search-skill/skills/* ~/.claude/skills/
+
+# Or install individually
 cp -r /tmp/web-search-skill/skills/web-search ~/.claude/skills/
+cp -r /tmp/web-search-skill/skills/wikipedia-search ~/.claude/skills/
+cp -r /tmp/web-search-skill/skills/arxiv-search ~/.claude/skills/
+
 rm -rf /tmp/web-search-skill
 ```
 
-Or for a specific project only:
+For a specific project only, replace `~/.claude/skills/` with `<your-project>/.claude/skills/`.
 
-```bash
-git clone https://github.com/kevmyung/web-search-skill.git /tmp/web-search-skill
-cp -r /tmp/web-search-skill/skills/web-search <your-project>/.claude/skills/
-rm -rf /tmp/web-search-skill
-```
-
-That's it. Claude Code will auto-discover the skill and install Python dependencies on first use.
+Claude Code will auto-discover the skills and install Python dependencies on first use.
 
 ### Strands Agent
 
-Copy `skills/web-search` into your agent's `skills/` folder:
+Copy skills into your agent's `skills/` folder:
 
 ```bash
-cp -r skills/web-search /path/to/your/agent/skills/
+cp -r skills/* /path/to/your/agent/skills/
 ```
 
 ## Usage
 
-Once installed, Claude Code will automatically invoke this skill when you ask it to search the web.
+Once installed, Claude Code will automatically invoke relevant skills based on your questions. You can also run them directly from the command line.
 
-You can also use it directly from the command line:
+### Web Search
 
 ```bash
 cd ~/.claude/skills/web-search
-
-# Search the web
 python3 scripts/web_search.py --query "Python async programming"
-
-# Fetch content from a URL
 python3 scripts/web_search.py --fetch-url "https://example.com/article"
-
-# Search and auto-fetch top 3 results
-python3 scripts/web_search.py --query "AWS Lambda best practices" --fetch-content --top-n 3
+python3 scripts/web_search.py --query "AWS Lambda" --fetch-content --top-n 3
 ```
 
-### Options
+### Wikipedia Search
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--query`, `-q` | Search query string | (required) |
-| `--max-results`, `-m` | Max search results (max: 10) | 5 |
-| `--fetch-url`, `-u` | URL to fetch content from | |
-| `--fetch-content`, `-f` | Auto-fetch content from top search results | false |
-| `--top-n`, `-n` | Number of top results to fetch | 3 |
-| `--include-html` | Include raw HTML in response | false |
-| `--max-length`, `-l` | Max character length for fetched content | 50000 |
+```bash
+cd ~/.claude/skills/wikipedia-search
+python3 scripts/wikipedia_search.py --query "Quantum computing"
+python3 scripts/wikipedia_search.py --title "Python (programming language)"
+python3 scripts/wikipedia_search.py --title "Machine learning" --summary-only
+python3 scripts/wikipedia_search.py --query "인공지능" --language ko
+```
+
+### ArXiv Search
+
+```bash
+cd ~/.claude/skills/arxiv-search
+python3 scripts/arxiv_search.py --query "transformer attention mechanism"
+python3 scripts/arxiv_search.py --paper-ids "2301.12345"
+python3 scripts/arxiv_search.py --paper-ids "2301.12345,2302.67890"
+```
 
 ## Requirements
 
 - Python 3.8+
-- Dependencies (`ddgs`, `httpx`, `beautifulsoup4`) are **auto-installed** on first run
+- All dependencies are **auto-installed** on first run per skill
 
 ## License
 
